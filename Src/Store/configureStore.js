@@ -1,28 +1,58 @@
-import { createStore, combineReducers } from 'redux';
-import { persistStore, persistReducer } from 'redux-persist';
-import Reducer from './reducers/reducerA';
-import storage from 'redux-persist/lib/storage';
-import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
-/*const persistConfig = {
-    key: 'root',
-    storage: storage,
-   // stateReconciler: autoMergeLevel2 ,// see "Merge Process" section for details.
-    whitelist:['Router']
-   };
-const RootRouter=combineReducers({
-  Reducer:Reducer
-})
-const pReducer = persistReducer(persistConfig, Reducer);
-export const store = createStore(pReducer);
+
+/*import { createStore, compose, applyMiddleware } from 'redux';
+import reducers from './reducers/reducerA';
+const configureStore=()=>{
+  return  createStore(reducers);
+};
+
+export default configureStore ;*/
+
+
+/*import { createStore, compose, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
+import { persistStore } from 'redux-persist';
+import reducer from './reducer';
+
+export const store = createStore(
+    reducer,
+    {},
+    compose(applyMiddleware(thunk))
+);
+
 export const persistor = persistStore(store);*/
 
 
-const configureStore=()=>{
-  return  createStore(Reducer);
-}
+import { createStore, compose, applyMiddleware, combineReducers } from 'redux';
+import thunk from 'redux-thunk';
+import {
+  persistStore,
+  persistReducer,
+  persistCombineReducers,
+} from 'redux-persist';
+import { AsyncStorage } from 'react-native';
 
-export default configureStore ;
+import reducer from './reducers/reducerA';
+import storage from 'redux-persist/es/storage';
+const info=reducer.info 
+const filterList=reducer.filterInfo
+const config = {
+  key: 'root',
+  storage:storage,
+  whitelist:['info','filterList']
+};
+
+const reducers = persistReducer(config,reducer)
 
 
+  export const store = createStore(
+    persistReducer(config,reducer))/*,
+    {},
+    compose(
+      applyMiddleware(thunk),
+      composeWithDevTools()
+    )
+  );*/
+ export  const persistor = persistStore(store);
 
+ 
 

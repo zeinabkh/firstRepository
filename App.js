@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 import { View, Text, Button, StyleSheet, DrawerLayoutAndroid } from 'react-native'
 import moment from 'moment-jalaali'
-import { DrawerLayout } from 'react-native-gesture-handler'
-//import addShiftWork from "./Src/Store/actions/index"
+import FadeInView from './Src/Component/firstViews/animatedTime'
 import { addShiftWork } from "./Src/Store/actions/actionIdentify";
 import DrawerView from "./Src/Component/DravwerView/DrawerView"
 import { connect } from 'react-redux';
@@ -10,7 +9,7 @@ class App extends Component {
     static navigationOptions = {
         title: 'Home',
         headerStyle: {
-          backgroundColor: '#f4511e',
+          backgroundColor: '#fa8072',
         },
         headerTintColor: '#fff',
         headerTitleStyle: {
@@ -32,7 +31,7 @@ class App extends Component {
 
 
     state = {
-        Label: "Clock",
+        Label: "شروع کار",
         TimeString: "",
         WageWork: 0.00,
         Time: {
@@ -108,7 +107,7 @@ class App extends Component {
                         Second: App.msToTime(preState.TimeSpan).s
                     },
                     TimeSpan: new Date() - this.startTime,
-                    Label: "Shifting",
+                    Label: "در حال کار...",
                     TimeString: App.formatTime(this.state.Time),
                     date: moment().format('jMM/jDD'),
                 }
@@ -121,20 +120,21 @@ class App extends Component {
                 this.props.addRecordShift({
                     year:moment().jYear(),
                     month:moment().jMonth(),
-                    
                     shiftSpan: preState.TimeSpan,
-                    dateRecord: preState.date,
+                    dateRecord:preState.startTime,
                     startWork: this.startTime.getHours().toString().concat(":", this.startTime.getMinutes().toString()),
                     endWork: new Date().getHours().toString().concat(":", new Date().getMinutes().toString()),
                     shiftSpanString: preState.TimeString,//App.formatTime2(this.state.ShiftWorks.TimeForEnd),
-                    wage: 20
+                    wage: 20,
+                    visible:true,
+                    date:moment().format('jMM/jDD') 
 
                 });
                 return {
 
 
                     TimeSpan: 0,
-                    Label: "Work End !!",
+                    Label:"شروع کار ",
                     TimeString: "",
                     date: "",
                     Time: {
@@ -164,12 +164,14 @@ class App extends Component {
                         <View style={styles.Circle}>
                             <Text style={styles.TextStyle}>{this.state.Label}</Text>
                             <Text>{this.state.date}</Text>
-                            <Text>{this.state.TimeString}</Text>
+                          
+                           
                             <Text>{timestartShow}</Text>
 
 
                         </View>
-                        <Button title="start" onPress={this.startTimer} />
+                        <FadeInView style={{padding:8,margin:8}}> <Text>{this.state.TimeString}</Text></FadeInView>
+                        <Button title= {this.timerState ? "stop":"start" }  color="#b22222" style={{padding:8,margin:8}}onPress={this.startTimer} />
                     </View>
                     <View >
 
@@ -192,26 +194,27 @@ const styles = StyleSheet.create({
     },
     Circleout: {
 
-        width: 250,
-        height: 250,
-        borderRadius: 125,
+        width: 300,
+        height: 300,
+        borderRadius: 150,
         alignItems: "center",
         borderWidth: 5,
-        borderColor: "black",
+        borderColor: "white",
         margin: 50
     },
     Circle: {
-        width: 200,
-        height: 200,
-        borderRadius: 100,
+        width: 150,
+        height: 150,
+        borderRadius:75,
         alignItems: "center",
-        borderWidth: 10,
-        borderColor: "pink"
+        borderWidth: 5,
+        borderColor: "#fa8072"
     },
     TextStyle: {
-        fontSize: 10,
+        fontSize: 15,
         fontWeight: "bold",
-        marginBottom: 10
+        marginBottom: 10,
+        marginTop:20 
 
     }
 })
