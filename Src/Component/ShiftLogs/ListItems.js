@@ -1,21 +1,31 @@
 import React, { Componet } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
-
-const ListItems = (props) => (
-    <TouchableOpacity style={styles.globalView}>
-          <Text style={styles.textStyle}>{props.wage}</Text>
-          <Text style={[styles.textStyle,{width:"20%"}]}>{props.workSpan}</Text>
-          <Text style={styles.textStyle}>{props.endWork}</Text>
-          <Text style={styles.textStyle} >{props.startWork}</Text>
-         <Text style={styles.textStyle} >{props.date}</Text>
+import moment from 'moment-jalaali'
+import RecordDetails from './recordDetail'
+const ListItems = (props) => {
+   // alert(props.itemselectCreatAt)
+    
+    return(
       
-           
-            
-          
-       
-    </TouchableOpacity>
+        <View style={{flexDirection:"column"}}>
 
-)
+
+<TouchableOpacity style={{flexDirection:"column"}} onPress={()=> props.onItemSelected(props.itemselectCreatAt)}>
+        <View style={styles.globalView}>
+
+        <Text style={styles.textStyle}>{props.wage}</Text>
+          <Text style={[styles.textStyle,{width:"20%"}]}>{props.workSpan}</Text>
+          <Text style={styles.textStyle}>{new Date(props.endWork).getHours().toString().concat(":",new Date(props.endWork).getMinutes().toString())}</Text>
+          <Text style={styles.textStyle} >{new Date(props.startWork).getHours().toString().concat(":",new  Date(props.startWork).getMinutes().toString())}</Text>
+         <Text style={styles.textStyle} >{moment(props.createAt).format('jMM/jDD')}</Text>
+            </View> 
+      </TouchableOpacity>
+   
+        </View>
+
+   
+
+)}
     ;
 const styles = StyleSheet.create({
     globalView: {

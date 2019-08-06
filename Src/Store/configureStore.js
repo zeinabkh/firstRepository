@@ -30,7 +30,7 @@ import {
   persistCombineReducers,
 } from 'redux-persist';
 import { AsyncStorage } from 'react-native';
-
+import { composeWithDevTools } from 'redux-devtools-extension';
 import reducer from './reducers/reducerA';
 import storage from 'redux-persist/es/storage';
 const info=reducer.info 

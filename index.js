@@ -25,7 +25,7 @@ AppRegistry.registerComponent(appName, () => nodePOint);*/
 
 import React, { Component } from 'react';
 import { name as appName } from './app.json';
-import { View ,AppRegistry} from 'react-native';
+import { View ,AppRegistry,DrawerLayoutAndroid} from 'react-native';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/lib/integration/react';
 import Router from './Router';
@@ -39,7 +39,10 @@ class App extends Component {
                 loading={<View />}
             >
                 <Provider store={store} >
+                  
                     <Router />
+                   
+                  
                 </Provider>
             </PersistGate>
         );

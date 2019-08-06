@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import { View, Text, Button, StyleSheet, DrawerLayoutAndroid } from 'react-native'
 import moment from 'moment-jalaali'
-import FadeInView from './Src/Component/firstViews/animatedTime'
+
 import { addShiftWork } from "./Src/Store/actions/actionIdentify";
-import DrawerView from "./Src/Component/DravwerView/DrawerView"
+import DrawerView from "./Src/Component/DrawerView/DrawerView"
 import { connect } from 'react-redux';
 class App extends Component {
     static navigationOptions = {
@@ -26,6 +26,7 @@ class App extends Component {
         this.timerState = false;
         this.interval = null;
         this.startTime = "";
+      
 
     }
 
@@ -92,10 +93,6 @@ class App extends Component {
     startTimer = () => {
 
         this.timerState = !this.timerState;
-        /*let m=moment().loadPersian({
-            usePersionDigits:true,
-            dialect:'persiom-modern'
-        })*/
         if (this.timerState) {
             this.startTime = new Date()
             this.interval = setInterval(() => this.setState((preState) => {
@@ -118,18 +115,13 @@ class App extends Component {
 
             this.setState((preState) => {
                 this.props.addRecordShift({
-                    year:moment().jYear(),
-                    month:moment().jMonth(),
-                    shiftSpan: preState.TimeSpan,
-                    dateRecord:preState.startTime,
-                    startWork: this.startTime.getHours().toString().concat(":", this.startTime.getMinutes().toString()),
-                    endWork: new Date().getHours().toString().concat(":", new Date().getMinutes().toString()),
-                    shiftSpanString: preState.TimeString,//App.formatTime2(this.state.ShiftWorks.TimeForEnd),
+                    startWork: this.startTime,
+                    endWork: new Date(),
+                    shiftSpanString: preState.TimeString,
                     wage: 20,
-                    visible:true,
-                    date:moment().format('jMM/jDD') 
-
-                });
+                    createAt:moment().format(),
+                    note:[]
+                  },this.props.listOfShifts);
                 return {
 
 
@@ -170,7 +162,7 @@ class App extends Component {
 
 
                         </View>
-                        <FadeInView style={{padding:8,margin:8}}> <Text>{this.state.TimeString}</Text></FadeInView>
+                         <Text>{this.state.TimeString}</Text>
                         <Button title= {this.timerState ? "stop":"start" }  color="#b22222" style={{padding:8,margin:8}}onPress={this.startTimer} />
                     </View>
                     <View >
@@ -219,11 +211,18 @@ const styles = StyleSheet.create({
     }
 })
 
+const mapStateToProps=({info,filterInfo,internalState})=>{
+  
+    return{
+        listOfShifts:info 
+        
+    }
 
+}
 const mapDispatchToProps = dispatch => {
     return {
-        addRecordShift: ShiftWorks => dispatch(addShiftWork(ShiftWorks))
+        addRecordShift: (ShiftWorks , info)=> dispatch(addShiftWork(ShiftWorks,info))
     }
 }
 
-export default connect(null, mapDispatchToProps)(App)
+export default connect(mapStateToProps, mapDispatchToProps)(App)
