@@ -4,13 +4,17 @@ import ShiftLogScreen from './Src/Component/ShiftLogs/ShiftLogScreen'
 import App from './App'
 import {DrawerLayoutAndroid} from 'react-native'
 import DrawerView from './Src/Component/DrawerView/DrawerView'
-import SettingView from './Src/Component/settingViews'
 
 export default  class Router extends Component {
     render(){
         return(
             <DrawerLayoutAndroid
-            renderNavigationView={()=>SettingView}>
+            renderNavigationView={()=>{
+                return(
+                    <  DrawerView/>
+                )
+              
+            }}>
                  <RoutContainar/>
             </DrawerLayoutAndroid>
         

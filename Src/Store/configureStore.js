@@ -34,11 +34,13 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import reducer from './reducers/reducerA';
 import storage from 'redux-persist/es/storage';
 const info=reducer.info 
-const filterList=reducer.filterInfo
+const baseWage=reducer.baseWage
+const overTimeWage=reducer.overTimeWage
+const endTime=reducer.endTime
 const config = {
   key: 'root',
   storage:storage,
-  whitelist:['info','filterList']
+  whitelist:['info','baseWage','overTimeWage','endTime']
 };
 
 const reducers = persistReducer(config,reducer)

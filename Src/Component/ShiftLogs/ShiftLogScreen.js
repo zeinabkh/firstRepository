@@ -3,10 +3,11 @@ import { FlatList, View, Text, StyleSheet, Picker } from 'react-native'
 import ListItems from './ListItems'
 import { connect } from 'react-redux'
 import moment from 'moment-jalaali'
-import Footer from './FooterForList'
+
 import { showMonthinf, sortByShiftSpan, sortBydate, deleteRecord, savenoteInRecord } from '../../Store/actions/actionIdentify'
 import RecordDetails from './recordDetail';
 import App from '../../../App'
+import {Footer, Body,Left,Right, Button} from 'native-base'
 
 class ShiftLogScreen extends Component {
     static navigationOptions = {
@@ -25,25 +26,65 @@ class ShiftLogScreen extends Component {
     constructor(props) {
         super(props)
 
-
+this.C=false ;
     }
     state = {
         year: 1398,
-        month: 0,
+        month: -1,
         selecteRecord: '',
+        selecteRecordlock:false
 
     }
+    renderSeparator = () => {
 
+        return (
+    
+          <View
+    
+            style={{
+    
+              height: 1,
+    
+              width: "86%",
+    
+              backgroundColor: "#CED0CE",
+    
+              marginLeft: "14%"
+    
+            }}
+    
+          />
+    
+        );
+    
+      };
+    
+    
+    
+ 
+    
     selectItem = (record) => {
-
+      
+        this.C=!this.C
+        this.props.traceChange = !this.props.traceChange
+         if(!this.state.selecteRecordlock){
+         
         this.setState(preState => {
             return {
                 ...preState,
-                selecteRecord: record
+                selecteRecord: record,
+                selecteRecordlock:true
+            }
+        });
+     }else{
+        this.setState(preState => {
+            return {
+                ...preState,
+                selecteRecord: '',
+                selecteRecordlock:false
             }//true}
         });
-        //   alert(this.state.selecteRecord)
-        this.props.traceChange = !this.props.traceChange
+     }
     }
 
 
@@ -93,20 +134,22 @@ class ShiftLogScreen extends Component {
 
 
         const sumofWages = () => {
-            let sum = 0;
+            let sum = 0,span=0;
             let time = {};
             let totallTime = "";
             for (i in this.props.listOfShifts) {
                 if (moment(this.props.listOfShifts[i].createAt).jMonth() === moment().jMonth())
-                    sum = sum + (((new Date(this.props.listOfShifts[i].endWork).getTime() - new Date(this.props.listOfShifts[i].startWork).getTime())))
-            }
+                    sum = sum + (((new Date(this.props.listOfShifts[i].endWork).getTime() - new Date(this.props.listOfShifts[i].startWork).getTime())))*this.props.listOfShifts[i].wage
+          span=span+ (((new Date(this.props.listOfShifts[i].endWork).getTime() - new Date(this.props.listOfShifts[i].startWork).getTime())))
+                }
+
             time = {
-                Hour: App.msToTime(sum).h,
-                Minute: App.msToTime(sum).m,
-                Second: App.msToTime(sum).s
+                Hour: App.msToTime(span).h,
+                Minute: App.msToTime(span).m,
+                Second: App.msToTime(span).s
             }
             totallTime = App.formatTime(time)
-            sum = Math.fround(sum / 3600000) * 20000
+            sum = Math.fround(sum / 3600000) 
             return { sum, totallTime }
 
         }
@@ -130,10 +173,10 @@ class ShiftLogScreen extends Component {
 
 
                     >
-                        <Picker.Item label="ماه" value={-1} />
+                        <Picker.Item label={this.state.month===-1? "ماه":Month[this.state.month].name} value={-1} />
 
                         {Month.map(month => {
-                            return (<Picker.Item label={month.name}
+                            return (<Picker.Item label={month.name} key={month.num}
                                 value={month.num}
                             />)
                         })}
@@ -166,14 +209,17 @@ class ShiftLogScreen extends Component {
                     <Text style={styles.headerTextStyle}>تاریخ  </Text>
                 </View>
 
-                <View style={{ width: "100%", height: 300 }}>
+                {/* <View style={{ width: "100%", height: 320 }}> */}
                     <FlatList
                         //   ListFooterComponent={<Footer count={this.props.baseInfo.length} totalWage={sumofWages()} />}
                         data={this.props.listOfShifts}
-                        extraData={this.props}
-                        ListFooterComponentStyle={{ height: 50 }}
+                        extraData={[this.props,this.state]}
+                        ItemSeparatorComponent={this.renderSeparator}
+                      //  ListFooterComponentStyle={{ height: 50 }}
+                   //     ListFooterComponent={<Footer count={this.props.baseInfo.length} totalWage={sumofWages().sum} Hours={sumofWages().totallTime} />}
+                        keyExtractor={item => item.startWork}
                         renderItem={(info) => {
-                            //   alert(this.state.selecteRecord)
+                            
                             return (
                                 <View  >
                                     <ListItems
@@ -188,8 +234,9 @@ class ShiftLogScreen extends Component {
                                     />
                                     {this.state.selecteRecord === new Date(info.item.startWork).getTime() ? (<RecordDetails startWork={info.item.startWork}
                                         saveNote={this.saveNote}
-                                        seeAllNotes={() => this.seeAllNotes()}
-                                        deletARecord={()=>this.deletItem()} />) : null}
+                                       // seeAllNotes={() => this.seeAllNotes()}
+                                        deletARecord={()=>this.deletItem()}
+                                        info={info.item} />) :null}
 
 
                                 </View>
@@ -199,8 +246,18 @@ class ShiftLogScreen extends Component {
                         }
                         }
                     />
-                </View>
-                <View style={{ width: "100%", height: "20%" }}><Footer count={this.props.baseInfo.length} totalWage={sumofWages().sum} Hours={sumofWages().totallTime} /></View>
+            
+               <Footer style={{ backgroundColor: "#fa8072", height: 50 }} >
+                    <Left>
+                      <Text>{"تعداد شیفت ها :".concat(this.props.listOfShifts.length)}</Text>
+                    </Left>
+                    <Body>
+                      <Text>{"مجموع حقوق:".concat(sumofWages().sum )}</Text>
+                    </Body>
+                    <Right>
+                  <Text>{"مجموع زمان:".concat( sumofWages().totallTime)}</Text>
+                    </Right>
+                   </Footer>
             </View>)
     }
 }
@@ -210,7 +267,7 @@ const styles = StyleSheet.create({
 
         justifyContent: "flex-start",
         alignItems: "flex-start",
-
+        flex:1,
         width: "100%"
 
 
@@ -221,6 +278,7 @@ const styles = StyleSheet.create({
         alignItems: "flex-start",
         borderWidth: 2,
         margin: 5,
+        marginTop:0,
         padding: 5,
         borderRightColor: "white",
         borderLeftColor: "white",
@@ -244,13 +302,16 @@ const styles = StyleSheet.create({
 
 })
 
-const mapStateToProps = ({ info, filterInfo, internalState, traceChange }) => {
+const mapStateToProps = ({ info, filterInfo, internalState, traceChange,baseWage,overTimeWage, endTime }) => {
 
     return {
         //info.reverse()//
-        listOfShifts: (internalState === 0) ? info.reverse() : filterInfo,
+        listOfShifts: (internalState === 0||internalState === 1) ? info.reverse() : filterInfo,
         traceChange: traceChange,
-        baseInfo: info.reverse()
+        baseInfo: info.reverse(),
+        baseWage:baseWage,
+        endTime:endTime,
+        overTimeWage:overTimeWage
     }
 };
 const mapDispatchToProps = dispatch => {

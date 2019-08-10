@@ -4,4 +4,9 @@
  export const SORT_DATE="sortdate" ;
  export const SAVE_NOTE="savenote"       ;
  export const  DELETE_ITEM="deleteItem";
-
+ export const SET_NEW_WAGE="setnewwage";
+export const SET_UPDATE_NEW_WAGE="setupdatenewwage";
+export const EDIT_RECORD="editrecord";
+export const START_EDIT="startedit";
+export const ADD_RECORD="addrecordmanoualy"
+export const DELETE_NOTE="deleteNote";

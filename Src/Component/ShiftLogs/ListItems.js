@@ -17,7 +17,7 @@ const ListItems = (props) => {
           <Text style={[styles.textStyle,{width:"20%"}]}>{props.workSpan}</Text>
           <Text style={styles.textStyle}>{new Date(props.endWork).getHours().toString().concat(":",new Date(props.endWork).getMinutes().toString())}</Text>
           <Text style={styles.textStyle} >{new Date(props.startWork).getHours().toString().concat(":",new  Date(props.startWork).getMinutes().toString())}</Text>
-         <Text style={styles.textStyle} >{moment(props.createAt).format('jMM/jDD')}</Text>
+         <Text style={styles.textStyle} >{moment(props.dateRecord).format('jMM/jDD')}</Text>
             </View> 
       </TouchableOpacity>
    
@@ -34,11 +34,11 @@ const styles = StyleSheet.create({
         alignItems: "flex-start",
         padding: 5,
         marginLeft: 5,
-        borderBottomColor: "#f5deb3",
-      borderTopColor:"white",
-        borderRightColor:"white",
-        borderLeftColor:"white",
-        borderWidth: 2,
+    //     borderBottomColor: "#f5deb3",
+    //   borderTopColor:"white",
+    //     borderRightColor:"white",
+    //     borderLeftColor:"white",
+    //     borderWidth: 2,
         height: 40,
         width: "100%"
 

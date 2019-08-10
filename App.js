@@ -5,6 +5,7 @@ import moment from 'moment-jalaali'
 import { addShiftWork } from "./Src/Store/actions/actionIdentify";
 import DrawerView from "./Src/Component/DrawerView/DrawerView"
 import { connect } from 'react-redux';
+
 class App extends Component {
     static navigationOptions = {
         title: 'Home',
@@ -118,10 +119,10 @@ class App extends Component {
                     startWork: this.startTime,
                     endWork: new Date(),
                     shiftSpanString: preState.TimeString,
-                    wage: 20,
+                    wage: this.props.baseWage,
                     createAt:moment().format(),
                     note:[]
-                  },this.props.listOfShifts);
+                  },this.props.listOfShifts,true);
                 return {
 
 
@@ -211,17 +212,20 @@ const styles = StyleSheet.create({
     }
 })
 
-const mapStateToProps=({info,filterInfo,internalState})=>{
+const mapStateToProps=({info,filterInfo,internalState,baseWage,overTimeWage,endTime})=>{
   
     return{
-        listOfShifts:info 
+        listOfShifts:info ,
+        baseWage:baseWage,
+        endTime:endTime,
+        overTimeWage:overTimeWage
         
     }
 
 }
 const mapDispatchToProps = dispatch => {
     return {
-        addRecordShift: (ShiftWorks , info)=> dispatch(addShiftWork(ShiftWorks,info))
+        addRecordShift: (ShiftWorks , info,state)=> dispatch(addShiftWork(ShiftWorks,info,state))
     }
 }
 
