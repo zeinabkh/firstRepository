@@ -6,13 +6,14 @@ import moment from 'moment-jalaali'
 import { setEditRescordInfo } from '../../Store/actions/actionIdentify'
 import { connect } from 'react-redux'
 import { Header, Footer, FooterTab, Left, Button, Body, Right, Title } from 'native-base'
+import wageCalculator from '../../Store/Tools/updateWages'
 const PersianCalendarPicker = require('react-native-persian-calendar-picker');
 //const PersianCalendarPicker = require('react-native-persian-calendars');
 // import PersianCalendarPicker from 'react-native-general-calendars'
 import { Calendar, CalendarList, Agenda } from 'react-native-calendars-persian';
+import { networkInterfaces } from 'os';
 
-import { LocaleConfig } from 'react-native-calendars-persian';
-import recordDetail from './recordDetail';
+
 
 
 class EditeRecord extends Component {
@@ -21,16 +22,18 @@ class EditeRecord extends Component {
 
         selectedTimeS: new Date(this.props.info.startWork),
         editState: this.props.edit,
-        dateSelected: this.props.info.createAt
+        dateSelected: this.props.info.createAt,
+        newWage:this.props.baseWage
 
     }
 
 
     setEditRecordHandler = (newDate, newWage, newTimeS, newTimeE, ListRecord, key) => {
+alert(this.props.overTimeWage)
+// alert((new Date(new Date(newTimeE).setHours(22,0,0,0)).getTime() - new Date(newTimeS).getTime()))
+     
 
-
-
-        this.props.setEditRecord(newDate, newWage, newTimeS, newTimeE, ListRecord, key)
+        this.props.setEditRecord(newDate,wageCalculator.updateWages(newTimeS,newTimeE,this.props.baseWage,this.props.overTimeWage), newTimeS, newTimeE, ListRecord, key)
     }
 
     render() {
@@ -134,17 +137,17 @@ class EditeRecord extends Component {
                                             maxDate="23:59"
                                             confirmBtnText="Confirm"
                                             cancelBtnText="Cancel"
-                                            customStyles={{
-                                                dateIcon: {
-                                                    position: 'absolute',
-                                                    left: 0,
-                                                    top: 4,
-                                                    marginLeft: 0
-                                                },
-                                                dateInput: {
-                                                    marginLeft: 36
-                                                }
-                                            }}
+                                            // customStyles={{
+                                            //     dateIcon: {
+                                            //         position: 'absolute',
+                                            //         left: 0,
+                                            //         top: 4,
+                                            //         marginLeft: 0
+                                            //     },
+                                            //     dateInput: {
+                                            //         marginLeft: 36
+                                            //     }
+                                            // }}
                                             onDateChange={(str, date) => (str, date) => this.setState(preState => {
                                                 return {
                                                     ...preState,
@@ -173,9 +176,9 @@ class EditeRecord extends Component {
                                                     top: 4,
                                                     marginLeft: 0
                                                 },
-                                                dateInput: {
-                                                    marginLeft: 36
-                                                }
+                                            //     dateInput: {
+                                            //         marginLeft: 36
+                                            //     }
                                             }}
                                             onDateChange={(str, date) => this.setState(preState => {
                                                 return {
@@ -208,9 +211,10 @@ class EditeRecord extends Component {
                         </View>
                         <PersianCalendarPicker
                             onDateChange={(date) => this.setState(preState => {
+                         //  alert(moment(date).format())
                                 return {
                                     ...preState,
-                                    dateSelected: moment(new Date(date)).format()
+                                    dateSelected:moment(date).format()
                                 }
                             })}
                             previousTitle="ماه قبل"
@@ -262,13 +266,17 @@ const styles = StyleSheet.create({
 });
 
 
-const mapStateToProps = ({ info, filterInfo, internalState, traceChange, closeEditor }) => {
+const mapStateToProps = ({ info, filterInfo, internalState, traceChange, closeEditor,baseWage,overTimeWage,endTime }) => {
     //if(internalState===2) {editEnable=closeEditor }  
 
     return {
         //info.reverse()//
         ListRecord: info,
-        editEnable: closeEditor
+        editEnable: closeEditor,
+        baseWage: baseWage,
+        endTime: endTime,
+        overTimeWage: overTimeWage
+
 
     }
 };

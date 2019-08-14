@@ -1,7 +1,7 @@
 import React, { Componet } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import moment from 'moment-jalaali'
-import RecordDetails from './recordDetail'
+
 const ListItems = (props) => {
    // alert(props.itemselectCreatAt)
     

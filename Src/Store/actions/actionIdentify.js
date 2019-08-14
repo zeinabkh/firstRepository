@@ -5,10 +5,11 @@ import { SORT_DATE } from './actionTypes'
 import { SAVE_NOTE } from './actionTypes'
 import moment from 'moment-jalaali'
 import App from '../../../App'
+import wageCalculatore from '../Tools/updateWages'
 export const addShiftWork = (newShiftWorkRecord, info, state) => {
     //   info.foreach(item=>alert(item.endWork))
     let temp = [];
-
+ 
 
     if (state) {
         return {
@@ -33,6 +34,8 @@ export const showMonthinf = (key, info) => {
         type: SELECT_A_MONTH,
         payLoad: {
             filterInfo: key === 0 ? info : info.filter(item => {
+                // alert(moment(info.createAt).format('jMM/jDD'))
+                // alert(moment(info.createAt))
                 return moment(info.createAt).jMonth() + 1 === key
             })
         }
@@ -45,7 +48,7 @@ export const sortByShiftSpan = (info) => {
         type: SORT_SHIFTSPAN,
         payLoad: {
             info: info.sort(function (a, b) {
-                var spanA = new Date(a.endWork) - new Date(a.startWork);
+                var spanA = new Date(a.endWork).getTime() - new Date(a.startWork).getTime();
                 var spanB = new Date(b.endWork) - new Date(b.startWork);
                 return spanA - spanB
             })
@@ -117,7 +120,7 @@ export const setandUpdateHourlyWages = (wage, overTimeWage, endTime, info) => {
         temp.push({
             ...info[i],
 
-            wage: parseInt(wage)
+            wage: wageCalculatore.updateWages(info[i].startWork,info[i].endWork,wage,overTimeWage)
         })
 
     }
@@ -180,7 +183,9 @@ export const setEditRescordInfo = (newDate, newWage, newTimeS, newTimeE, info, k
         }
     }
 
-    //alert(temp.length)
+//    for(i in temp ){
+//        alert (moment(temp[i].createAt).format('jMM/jDD'))
+//    }
     return {
         type: EDIT_RECORD,
         payLoad: {

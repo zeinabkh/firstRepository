@@ -4,9 +4,9 @@ import { SORT_SHIFTSPAN, SET_NEW_WAGE, DELETE_NOTE, SET_UPDATE_NEW_WAGE, EDIT_RE
 import { SORT_DATE } from '../actions/actionTypes'
 import { SAVE_NOTE } from '../actions/actionTypes'
 import { DELETE_ITEM } from '../actions/actionTypes'
-import { returnStatement } from "@babel/types";
 
-const initialState = { info: [], filterInfo: [], internalState: 0, traceChange: false, closeEditor: true, baseWage: 40000, overTimeWage: 50000, endTime: new Date().setHours(16, 0, 0) };
+
+const initialState = { info: [], filterInfo: [], internalState: 0, traceChange: false, closeEditor: true, baseWage: 40000, overTimeWage: 1.25, endTime: new Date().setHours(16, 0, 0) };
 const reducerA = (state = initialState, action) => {
 
     switch (action.type) {

@@ -5,20 +5,21 @@ import moment from 'moment-jalaali'
 import { addShiftWork } from "./Src/Store/actions/actionIdentify";
 import DrawerView from "./Src/Component/DrawerView/DrawerView"
 import { connect } from 'react-redux';
+import wageCalculator from './Src/Store/Tools/updateWages'
 
 class App extends Component {
     static navigationOptions = {
         title: 'Home',
         headerStyle: {
-          backgroundColor: '#fa8072',
+            backgroundColor: '#fa8072',
         },
         headerTintColor: '#fff',
         headerTitleStyle: {
-          fontWeight: 'bold',
+            fontWeight: 'bold',
         },
-      };
-    
-    
+    };
+
+
 
 
     constructor(props) {
@@ -27,7 +28,7 @@ class App extends Component {
         this.timerState = false;
         this.interval = null;
         this.startTime = "";
-      
+
 
     }
 
@@ -112,22 +113,21 @@ class App extends Component {
             }), 1000);
         }
         if (!this.timerState) {
-            clearInterval(this.interval);
-
+          
             this.setState((preState) => {
                 this.props.addRecordShift({
                     startWork: this.startTime,
                     endWork: new Date(),
                     shiftSpanString: preState.TimeString,
-                    wage: this.props.baseWage,
-                    createAt:moment().format(),
-                    note:[]
-                  },this.props.listOfShifts,true);
+                    wage:wageCalculator.updateWages(this.startTime,new Date(),this.props.baseWage,this.props.overTimeWage),
+                    createAt: moment().format(),
+                    note: ""
+                }, this.props.listOfShifts, true);
                 return {
 
 
                     TimeSpan: 0,
-                    Label:"شروع کار ",
+                    Label: "شروع کار ",
                     TimeString: "",
                     date: "",
                     Time: {
@@ -157,20 +157,20 @@ class App extends Component {
                         <View style={styles.Circle}>
                             <Text style={styles.TextStyle}>{this.state.Label}</Text>
                             <Text>{this.state.date}</Text>
-                          
-                           
+
+
                             <Text>{timestartShow}</Text>
 
 
                         </View>
-                         <Text>{this.state.TimeString}</Text>
-                        <Button title= {this.timerState ? "stop":"start" }  color="#b22222" style={{padding:8,margin:8}}onPress={this.startTimer} />
+                        <Text>{this.state.TimeString}</Text>
+                        <Button title={this.timerState ? "stop" : "start"} color="#b22222" style={{ padding: 8, margin: 8 }} onPress={this.startTimer} />
                     </View>
                     <View >
 
                     </View>
                 </View>
-                </DrawerLayoutAndroid>
+            </DrawerLayoutAndroid>
 
 
 
@@ -198,7 +198,7 @@ const styles = StyleSheet.create({
     Circle: {
         width: 150,
         height: 150,
-        borderRadius:75,
+        borderRadius: 75,
         alignItems: "center",
         borderWidth: 5,
         borderColor: "#fa8072"
@@ -207,25 +207,25 @@ const styles = StyleSheet.create({
         fontSize: 15,
         fontWeight: "bold",
         marginBottom: 10,
-        marginTop:20 
+        marginTop: 20
 
     }
 })
 
-const mapStateToProps=({info,filterInfo,internalState,baseWage,overTimeWage,endTime})=>{
-  
-    return{
-        listOfShifts:info ,
-        baseWage:baseWage,
-        endTime:endTime,
-        overTimeWage:overTimeWage
-        
+const mapStateToProps = ({ info, filterInfo, internalState, baseWage, overTimeWage, endTime }) => {
+
+    return {
+        listOfShifts: info,
+        baseWage: baseWage,
+        endTime: endTime,
+        overTimeWage: overTimeWage
+
     }
 
 }
 const mapDispatchToProps = dispatch => {
     return {
-        addRecordShift: (ShiftWorks , info,state)=> dispatch(addShiftWork(ShiftWorks,info,state))
+        addRecordShift: (ShiftWorks, info, state) => dispatch(addShiftWork(ShiftWorks, info, state))
     }
 }
 

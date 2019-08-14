@@ -17,10 +17,10 @@ class WageSetting extends Component {
     }
 
     setHourlyWage = (HourlyWage, overTimeWage, endTime, baseInfo) => {
-        this.props.setWages(HourlyWage, overTimeWage, endTime, baseInfo)
+        this.props.setWages(HourlyWage, overTimeWage/100, endTime, baseInfo)
     }
     setandUpdateHourlyWage = (HourlyWage, overTimeWage, endTime, baseInfo) => {
-        this.props.setUpdateWages(HourlyWage, overTimeWage, endTime, baseInfo)
+        this.props.setUpdateWages(HourlyWage, overTimeWage/100, endTime, baseInfo)
     }
 
     render() {
@@ -30,14 +30,7 @@ class WageSetting extends Component {
 
             >
                 <Header style={{ backgroundColor: "#fa8072" }}>
-                    {/* <Left style={{ flexDirection: "row", justifyContent: "flex-start" }}>
-                        <TouchableOpacity style={{ flexDirection: "row", justifyContent: "flex-start" }} onPress={this.props.close}
-                        >
-                            <Text>
-                                بازگشت
-                            </Text>
-                        </TouchableOpacity>
-                    </Left> */}
+                  
                 </Header>
                 <View style={{
                     flex: 1,
@@ -50,7 +43,7 @@ class WageSetting extends Component {
                             width: "100%",
                             flexDirection: 'column',
                             justifyContent: "center",
-                            alignItems: 'center', marginTop: 20, height: 200, borderBottomColor: 'black', borderBottomWidth: 1
+                            alignItems: 'center', marginTop: 20, height: 200,
                         }}>
                             <View style={{
                                 width: "100%",
@@ -58,7 +51,7 @@ class WageSetting extends Component {
                                 justifyContent: "center",
                                 alignItems: "center",
                                 borderRadius: 20,
-                                backgroundColor: "#48d1cc",
+                                backgroundColor: "#ff6347",
                                 padding: 10,
                                 margin: 10
 
@@ -83,55 +76,26 @@ class WageSetting extends Component {
                                 alignItems: "center",
                                 borderRadius: 20,
                                 padding: 10,
-                                backgroundColor: "#48d1cc",
+                                backgroundColor: "#ff6347",
                                 margin: 10
 
                             }}>
-                                <Text style={{ width: 80, fontSize: 10, fontWeight: 'bold' }}>تومان</Text>
+                                <Text style={{ width: 100, fontSize: 20, fontWeight: 'bold' }}>%</Text>
                                 <TextInput
                                     style={{ margin: 10, width: 80, borderBottomColor: 'black', borderBottomWidth: 1 }}
                                     onChangeText={vlaue =>
                                         this.setState(prestate => {
                                             return {
                                                 ...prestate,
-                                                overTimeWage: parseInt(vlaue)
+                                                overTimeWage: parseInt(vlaue)/100
                                             }
                                         })} />
-                                <Text style={{ width: 80, fontSize: 15, fontWeight: 'bold' }}>حقوق اضافه کار :</Text>
+                                <Text style={{ width: 100, fontSize: 8, fontWeight: 'bold' }}>درصد اضافه حقوق شیفت شب</Text>
                             </View>
                         </View>
 
                         <View style={{ justifyContent: 'center', alignItems: "center", padding: 20, margin: 20 }}>
-                            <DatePicker
-
-                                style={{ width: 100 }}
-                                //date={this.props.endTime} //initial date from state
-                                mode="time" //The enum of date, datetime and time
-                                placeholder="select date"
-                                format="HH:MM"
-                                minDate="00:00"
-                                maxDate="23:59"
-                                confirmBtnText="Confirm"
-                                cancelBtnText="Cancel"
-                                customStyles={{
-                                    dateIcon: {
-                                        position: 'absolute',
-                                        left: 0,
-                                        top: 4,
-                                        marginLeft: 0
-                                    },
-                                    dateInput: {
-                                        marginLeft: 36
-                                    }
-                                }}
-
-                                onDateChange={(str, date) => this.setState(preState => {
-                                    return {
-                                        ...preState,
-                                        endTime: new Date(date)
-                                    }
-                                })}
-                            />
+                            
                         </View>
 
 
@@ -139,12 +103,12 @@ class WageSetting extends Component {
                 </View>
                 <Footer style={{ backgroundColor: "#fa8072", height: 50 }} >
                     <Left>
-                        {/* <View style={{ alignItems: "center", width: "100%", height: 50, backgroundColor: "#fa8072" }}> */}
+                       
                         <TouchableOpacity style={{ width: "100%", alignItems: "center", height: 50, backgroundColor: "#fa8072" }} onPressOut={this.props.close} onPress={() => this.setHourlyWage(this.state.HourlyWage, this.state.overTimeWage, this.endTime, this.props.baseInfo)
                         }>
                             <Text>ذخیره  </Text>
                         </TouchableOpacity>
-                        {/* </View> */}
+                        
                     </Left>
                     <Body>
                         <TouchableOpacity style={{ width: "100%", alignItems: "center", height: 50, backgroundColor: "#fa8072" }} onPress={this.props.close}
@@ -155,12 +119,12 @@ class WageSetting extends Component {
                         </TouchableOpacity>
                     </Body>
                     <Right>
-                        {/* <View style={{ alignItems: "center", width: "100%", height: 50, backgroundColor: "#fa8072" }}> */}
+                     
                         <TouchableOpacity style={{ width: "100%", alignItems: "center", height: 50, backgroundColor: "#fa8072" }} onPressOut={this.props.close} onPress={() => this.setandUpdateHourlyWage(this.state.HourlyWage, this.state.overTimeWage, this.endTime, this.props.baseInfo)
                         }>
                             <Text>ذخیره و بروز رسانی </Text>
                         </TouchableOpacity>
-                        {/* </View> */}
+                      
                     </Right>
 
                 </Footer>

@@ -149,7 +149,8 @@ this.C=false ;
                 Second: App.msToTime(span).s
             }
             totallTime = App.formatTime(time)
-            sum = Math.fround(sum / 3600000) 
+            
+            sum = Math.round(sum / 3600000) 
             return { sum, totallTime }
 
         }
@@ -209,19 +210,20 @@ this.C=false ;
                     <Text style={styles.headerTextStyle}>تاریخ  </Text>
                 </View>
 
-                {/* <View style={{ width: "100%", height: 320 }}> */}
+            
                     <FlatList
-                        //   ListFooterComponent={<Footer count={this.props.baseInfo.length} totalWage={sumofWages()} />}
-                        data={this.props.listOfShifts}
+                   
+                        data={this.props.baseInfo}
                         extraData={[this.props,this.state]}
                         ItemSeparatorComponent={this.renderSeparator}
-                      //  ListFooterComponentStyle={{ height: 50 }}
-                   //     ListFooterComponent={<Footer count={this.props.baseInfo.length} totalWage={sumofWages().sum} Hours={sumofWages().totallTime} />}
+                   
                         keyExtractor={item => item.startWork}
                         renderItem={(info) => {
-                            
+                         //  alert(moment(info.item.createAt).format('jMM/jDD'))
+                          //  alert(moment(info.item.createAt).jMonth())
+                            if(this.state.month===-1||this.state.month===0||this.state.month===moment(info.item.createAt).jMonth()+1 )
                             return (
-                                <View  >
+                                <View >
                                     <ListItems
                                         startWork={info.item.startWork}
                                         endWork={info.item.endWork}
@@ -247,14 +249,14 @@ this.C=false ;
                         }
                     />
             
-               <Footer style={{ backgroundColor: "#fa8072", height: 50 }} >
-                    <Left>
+               <Footer style={{ backgroundColor: "#fa8072", height: 50  }} >
+                    <Left style={{  padding:5, margin:5 }}>
                       <Text>{"تعداد شیفت ها :".concat(this.props.listOfShifts.length)}</Text>
                     </Left>
-                    <Body>
+                    <Body style={{  padding:5, margin:5 }}>
                       <Text>{"مجموع حقوق:".concat(sumofWages().sum )}</Text>
                     </Body>
-                    <Right>
+                    <Right style={{  padding:5, margin:5 }}>
                   <Text>{"مجموع زمان:".concat( sumofWages().totallTime)}</Text>
                     </Right>
                    </Footer>
@@ -306,7 +308,7 @@ const mapStateToProps = ({ info, filterInfo, internalState, traceChange,baseWage
 
     return {
         //info.reverse()//
-        listOfShifts: (internalState === 0||internalState === 1) ? info.reverse() : filterInfo,
+        listOfShifts: (internalState === 0||internalState === 1) ? info.reverse() : filterInfo.reverse(),
         traceChange: traceChange,
         baseInfo: info.reverse(),
         baseWage:baseWage,

@@ -57,12 +57,7 @@ class RecordDetails extends Component {
         this.setState((preState) => {
             return {
                 ...preState,
-                notes:{
-                    note:value,
-                    date:moment().format(),
-                    key:Math.random()
-
-                }
+                notes:value
             
             }
 
@@ -108,8 +103,8 @@ class RecordDetails extends Component {
                         </View>
                     </TouchableOpacity >
 
-                    <TextInput editable={this.state.editable} style={{ width: 200, margin: 10, borderBottomColor:this.state.editable?"#48d1cc" : "black", borderBottomWidth: 1, height: 50 }} onChangeText={(value) => this.getNote(value)} /*placeholder={} */ />
-                    <Button title="یادداشت ها" onPress={()=>this.setState({showNotes:true})} />
+                    <TextInput editable={this.state.editable} style={{ width: 200, margin: 10, borderBottomColor:this.state.editable?"#48d1cc" : "black", borderBottomWidth: 1, height: 50 }} onChangeText={(value) => this.getNote(value)} placeholder="note" defaultValue={this.props.info.note}  />
+{/* <Button title="یادداشت ها" onPress={()=>this.setState({showNotes:true})} /> */}
                 </View>
                 <View style={styles.detatilIcoStyle}>
                     < TouchableOpacity style={styles.iconStyle} onPress={() => this.showEditPage()}>
